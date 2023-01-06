@@ -21,3 +21,10 @@ a {
 * {
   box-sizing: border-box;
 }
+
+:root {
+  --text-black: #000000;
+  --text-white-100: #ffffff;
+  --text-purple: #6b46c1;
+  --text-purple-dark: #553c9a;
+}
