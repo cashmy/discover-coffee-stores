@@ -3,10 +3,22 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Banner from '../components/banner'
 import Card from '../components/card'
+import { fetchCoffeeStores } from '../lib/coffee-stores'
 
 
-export default function Home() {
+// * Server Side Code below
+export async function getStaticProps() {
 
+  const coffeeStores = await fetchCoffeeStores();
+  return {
+    props: {
+      coffeeStores
+    },
+  };
+}
+
+// * Client Side Code below
+export default function Home(props) {
   const handleOnBannerClick = () => {
     alert('You clicked the banner button!')
   }
@@ -25,22 +37,28 @@ export default function Home() {
           handleOnClick={handleOnBannerClick}
         />
         <div className={styles.heroImage}>
-          <Image src="/static/hero-image.png" width={700} height={400} />
+          <Image src="/static/hero-image.png" width={700} height={400} alt="Hero image" />
         </div>
-        <div className={styles.cardLayout}>
-          <Card
-            name='DarkHorse Coffee'
-            imgUrl='/static/hero-image.png'
-            href="/coffee-store/darkhorse-coffee"
-            className={styles.card}
-          />
-          <Card
-            name='DarkHorse Coffee'
-            imgUrl='/static/hero-image.png'
-            href="/coffee-store/darkhorse-coffee"
-            className={styles.card}
-          /> 
-        </div>
+        {props.coffeeStores && props.coffeeStores.length > 0 &&
+          <>
+            <h2 className={styles.heading2}>Toronto shops</h2>
+
+            <div className={styles.cardLayout}>
+              {props.coffeeStores && props.coffeeStores.map((store) => {
+                return (
+                  <Card
+                    key={store.fsq_id}
+                    name={store.name}
+                    imgUrl={store.imgUrl || 'https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80'}
+                    href={`/coffee-store/${store.fsq_id}`}
+                    altText={store.name}
+                    className={styles.card}
+                  />
+                )
+              })
+              }
+            </div>
+          </>}
       </main>
     </div>
   )
