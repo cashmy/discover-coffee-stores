@@ -6,7 +6,7 @@ import Card from '../components/card'
 import { fetchCoffeeStores } from '../lib/coffee-stores'
 import useTrackLocation from '../hooks/use-track-location'
 import { useState, useEffect, useContext } from 'react'
-import { StoreContext, ACTION_TYPES } from '../pages/_app'
+import { StoreContext, ACTION_TYPES } from '../store/store-context'
 
 
 // * Server Side Code below
