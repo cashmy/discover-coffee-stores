@@ -12,7 +12,7 @@ export async function getStaticProps(context) {
   return {
     props: {
       coffeeStore: coffeeStores.find((coffeeStore) => {
-        return coffeeStore.fsq_id.toString() === params.id;
+        return coffeeStore.id.toString() === params.id;
       }),
     },
   };
@@ -24,7 +24,7 @@ export async function getStaticPaths() {
     paths: coffeeStores.map((store) => {
       return {
         params: {
-          id: store.fsq_id.toString(),
+          id: store.id.toString(),
         },
       }
     }
@@ -39,7 +39,7 @@ const CoffeeStore = (props) => {
   if (router.isFallback) {
     return <div>Loading...</div>
   }
-  const { location, name, imgUrl, } = props.coffeeStore;
+  const { address, name, neighborhood, imgUrl, } = props.coffeeStore;
 
   const handleUpvoteButton = () => {
     alert("handleUpvoteButton")
@@ -53,7 +53,7 @@ const CoffeeStore = (props) => {
       <div className={styles.container}>
         <div className={styles.col1}>
           <div className={styles.backToHomeLink}>
-            <Link href="/">Back to Home</Link>
+            <Link href="/">← Back to home</Link>
           </div>
           <div className={styles.nameWrapper}>
             <h1 className={styles.name}>{name}</h1>
@@ -68,14 +68,18 @@ const CoffeeStore = (props) => {
         </div>
 
         <div className={cls("glass", styles.col2)}>
+          {address && (
           <div className={styles.iconWrapper}>
             <Image src="/static/icons/places.svg" width={24} height={24} alt="icon" />
-            <p className={styles.text}>{location.address}</p>
+            <p className={styles.text}>{address}</p>
           </div>
+          )}
+          {neighborhood && (
           <div className={styles.iconWrapper}>
             <Image src="/static/icons/nearMe.svg" width={24} height={24} alt="icon" />
-            <p className={styles.text}>{location.locality}</p>
+            <p className={styles.text}>{neighborhood}</p>
           </div>
+          )}
           <div className={styles.iconWrapper}>
             <Image src="/static/icons/star.svg" width={24} height={24} alt="icon" />
             <p className={styles.text}>1</p>
