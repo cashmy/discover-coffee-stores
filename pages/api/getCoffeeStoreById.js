@@ -1,16 +1,13 @@
-import { table, getMinifiedRecords } from '../../lib/Airtable';
+import { findRecordByFilter } from '../../lib/Airtable';
 
 const getCoffeeStoreById = async (req, res) => {
   const { id } = req.query;
   try {
     if (id) {
-      const findCoffeeStoreRecord = await table.select({
-        filterByFormula: `id = "${id}"`
-      })
-        .firstPage();
 
-      if (findCoffeeStoreRecord.length !== 0) {
-        const records = getMinifiedRecords(findCoffeeStoreRecord);
+      const records = await findRecordByFilter(id);
+
+      if (records.length !== 0) {
         res.statusCode = 200
         res.json(records)
       } else {
