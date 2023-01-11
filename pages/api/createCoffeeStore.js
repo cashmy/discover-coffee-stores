@@ -10,8 +10,6 @@ const createCoffeeStore = async (req, res) => {
         })
           .firstPage();
   
-        console.log({ id })
-  
         if (findCoffeeStoreRecord.length !== 0) {
           const records = getMinifiedRecords(findCoffeeStoreRecord);
           res.statusCode = 200
