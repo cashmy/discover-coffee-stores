@@ -29,7 +29,7 @@ export default function Home(props) {
   const { dispatch, state } = useContext(StoreContext);
   const { coffeeStores, latLong } = state;
 
-  console.log({ latLong, locationErrorMsg })
+  // console.log({ latLong, locationErrorMsg })
 
   useEffect(() => {
     async function setCoffeeStoresByLocation() {

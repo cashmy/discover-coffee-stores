@@ -8,6 +8,9 @@ import cls from 'classnames';
 import { fetchCoffeeStores } from '../../lib/coffee-stores';
 import { StoreContext } from '../../store/store-context';
 import { isEmpty } from '../../utils';
+import useSWR from 'swr';
+import { fetcher } from '../../utils';
+// import fetch from 'unfetch'
 
 export async function getStaticProps(context) {
   const params = context.params
@@ -44,16 +47,16 @@ const CoffeeStore = (initialProps) => {
     return <div>Loading...</div>
   }
 
-  const id = router.query.id;
-
-  const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
-  const [votingCount, setVotingCount] = useState(0);
-
   const {
     state: {
       coffeeStores
     }
   } = useContext(StoreContext);
+
+  const id = router.query.id;
+  const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
+  const [votingCount, setVotingCount] = useState(0);
+  const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher )
 
   const handleCreateCoffeeStore = async (coffeeStore) => {
     const { id, name, voting, address, neighborhood, imgUrl } = coffeeStore;
@@ -80,6 +83,15 @@ const CoffeeStore = (initialProps) => {
 
   }
 
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      console.log("Data from SWR: ", data)
+      setCoffeeStore(data[0])
+      setVotingCount(data[0].voting)
+    }
+  },[data])
+
   useEffect(() => {
     if (isEmpty(initialProps.coffeeStore)) {
       if (coffeeStores.length > 0) {
@@ -102,6 +114,11 @@ const CoffeeStore = (initialProps) => {
   const handleUpvoteButton = () => {
     // alert("handleUpvoteButton")
     setVotingCount(votingCount + 1);
+  }
+
+  // * Check SWR error for data fetching
+  if (error) {
+    return <div>Failed to load data/page.</div>
   }
 
   return (
