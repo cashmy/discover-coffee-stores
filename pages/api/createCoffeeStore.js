@@ -4,10 +4,9 @@ const createCoffeeStore = async (req, res) => {
   if (req.method == 'POST') {
     const { id, name, address, neighborhood, voting, imgUrl } = req.body;
     if (id) {
-      
       try {
         const findCoffeeStoreRecord = await table.select({
-          filterByFormula: `id = ${id}`
+          filterByFormula: `id = "${id}"`
         })
           .firstPage();
   

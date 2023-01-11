@@ -54,16 +54,46 @@ const CoffeeStore = (initialProps) => {
     }
   } = useContext(StoreContext);
 
+  const handleCreateCoffeeStore = async (coffeeStore) => {
+    const { id, name, voting, address, neighborhood, imgUrl } = coffeeStore;
+    try {
+      const response = await fetch('/api/createCoffeeStore', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id,
+          name,
+          address: address || "",
+          neighborhood: neighborhood || "",
+          voting: 0,
+          imgUrl,
+        }),
+      })
+      const dbCoffeeStore = await response.json();
+      console.log({ dbCoffeeStore });
+    } catch (error) {
+      console.error('Error creating or finding record', error);
+    }
+
+  }
+
   useEffect(() => {
     if (isEmpty(initialProps.coffeeStore)) {
       if (coffeeStores.length > 0) {
-        const findCoffeeStoreById = coffeeStores.find((coffeeStore) => {
+        const coffeStoreFromContext = coffeeStores.find((coffeeStore) => {
           return coffeeStore.id.toString() === id;
         });
-        setCoffeeStore(findCoffeeStoreById);
-      }  
+        // if(coffeStoreFromContext){
+        setCoffeeStore(coffeStoreFromContext);
+        handleCreateCoffeeStore(coffeStoreFromContext);
+        // }
+      }
+    } else {
+      handleCreateCoffeeStore(initialProps.coffeeStore)
     }
-  },[id])
+  }, [id, initialProps, initialProps.coffeeStore])
 
 
   const { address, name, neighborhood, imgUrl, } = coffeeStore;
@@ -90,33 +120,33 @@ const CoffeeStore = (initialProps) => {
             width={600}
             height={360}
             className={styles.storeImg}
-            alt={name}
+            alt={name || 'coffee store'}
           />
         </div>
 
         <div className={cls("glass", styles.col2)}>
           {address && (
-          <div className={styles.iconWrapper}>
-            <Image src="/static/icons/places.svg" width={24} height={24} alt="icon" />
-            <p className={styles.text}>{address}</p>
-          </div>
+            <div className={styles.iconWrapper}>
+              <Image src="/static/icons/places.svg" width={24} height={24} alt="icon" />
+              <p className={styles.text}>{address}</p>
+            </div>
           )}
           {neighborhood && (
-          <div className={styles.iconWrapper}>
-            <Image src="/static/icons/nearMe.svg" width={24} height={24} alt="icon" />
-            <p className={styles.text}>{neighborhood}</p>
-          </div>
+            <div className={styles.iconWrapper}>
+              <Image src="/static/icons/nearMe.svg" width={24} height={24} alt="icon" />
+              <p className={styles.text}>{neighborhood}</p>
+            </div>
           )}
           <div className={styles.iconWrapper}>
             <Image src="/static/icons/star.svg" width={24} height={24} alt="icon" />
             <p className={styles.text}>1</p>
           </div>
 
-          <button 
+          <button
             className={styles.upvoteButton}
             onClick={handleUpvoteButton}
-            >
-             Up Vote</button>
+          >
+            Up Vote</button>
         </div>
       </div>
     </div>
