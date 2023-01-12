@@ -56,7 +56,7 @@ const CoffeeStore = (initialProps) => {
   const id = router.query.id;
   const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
   const [votingCount, setVotingCount] = useState(0);
-  const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher )
+  const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher)
 
   const handleCreateCoffeeStore = async (coffeeStore) => {
     const { id, name, voting, address, neighborhood, imgUrl } = coffeeStore;
@@ -90,6 +90,7 @@ const CoffeeStore = (initialProps) => {
     }
   },[data])
 
+
   useEffect(() => {
     if (isEmpty(initialProps.coffeeStore)) {
       if (coffeeStores.length > 0) {
@@ -106,9 +107,9 @@ const CoffeeStore = (initialProps) => {
     }
   }, [id, initialProps, initialProps.coffeeStore])
 
-
   const { address, name, neighborhood, imgUrl, } = coffeeStore;
 
+  // * Handle UpVote
   const handleUpvoteButton = async () => {
     try {
       const response = await fetch('/api/upVoteCoffeeStoreById', {
@@ -121,8 +122,10 @@ const CoffeeStore = (initialProps) => {
         }),
       })
       const dbCoffeeStore = await response.json();
-
-      if (dbCoffeeStore && dbCoffeeStore.length > 0) {
+      
+      // TODO: Notice for team mates
+      // * The original code is not working because the dbCoffeeStore is not being cast as an array!
+      if (dbCoffeeStore) {
         setVotingCount(votingCount + 1);
       }
     } catch (error) {
