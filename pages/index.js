@@ -29,8 +29,6 @@ export default function Home(props) {
   const { dispatch, state } = useContext(StoreContext);
   const { coffeeStores, latLong } = state;
 
-  // console.log({ latLong, locationErrorMsg })
-
   useEffect(() => {
     async function setCoffeeStoresByLocation() {
       if (latLong) {
@@ -44,7 +42,6 @@ export default function Home(props) {
           setCoffeeStoresError('');
         }
         catch (error) {
-          console.log(error)
           setCoffeeStoresError(error.message);
         }
       }
@@ -111,7 +108,7 @@ export default function Home(props) {
                     imgUrl={store.imgUrl || 'https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80'}
                     href={`/coffee-store/${store.id}`}
                     altText={store.name}
-                    className={styles.card}
+                    // className={styles.card}
                   />
                 )
               })

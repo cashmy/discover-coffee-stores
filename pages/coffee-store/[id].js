@@ -76,7 +76,6 @@ const CoffeeStore = (initialProps) => {
         }),
       })
       const dbCoffeeStore = await response.json();
-      console.log({ dbCoffeeStore });
     } catch (error) {
       console.error('Error creating or finding record', error);
     }
@@ -86,7 +85,6 @@ const CoffeeStore = (initialProps) => {
 
   useEffect(() => {
     if (data && data.length > 0) {
-      console.log("Data from SWR: ", data)
       setCoffeeStore(data[0])
       setVotingCount(data[0].voting)
     }
@@ -111,9 +109,25 @@ const CoffeeStore = (initialProps) => {
 
   const { address, name, neighborhood, imgUrl, } = coffeeStore;
 
-  const handleUpvoteButton = () => {
-    // alert("handleUpvoteButton")
-    setVotingCount(votingCount + 1);
+  const handleUpvoteButton = async () => {
+    try {
+      const response = await fetch('/api/upVoteCoffeeStoreById', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id,
+        }),
+      })
+      const dbCoffeeStore = await response.json();
+
+      if (dbCoffeeStore && dbCoffeeStore.length > 0) {
+        setVotingCount(votingCount + 1);
+      }
+    } catch (error) {
+      console.error('Error upvoting the coffee store', error);
+    }
   }
 
   // * Check SWR error for data fetching
