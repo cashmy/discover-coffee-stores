@@ -7,6 +7,7 @@ import { fetchCoffeeStores } from '../lib/coffee-stores'
 import useTrackLocation from '../hooks/use-track-location'
 import { useState, useEffect, useContext } from 'react'
 import { StoreContext, ACTION_TYPES } from '../store/store-context'
+import HeroImage from '../public/static/hero-image.png'
 
 
 // * Server Side Code below
@@ -70,7 +71,7 @@ export default function Home(props) {
         {coffeeStoresError && <p>Something went wrong {coffeeStoresError}</p>}
 
         <div className={styles.heroImage}>
-          <Image src="/static/hero-image.png" width={700} height={400} alt="Hero image" />
+          <Image src={HeroImage} alt="Hero image" />
         </div>
 
         {coffeeStores && coffeeStores.length > 0 &&

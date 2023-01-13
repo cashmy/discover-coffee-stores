@@ -10,6 +10,12 @@ import { StoreContext } from '../../store/store-context';
 import { isEmpty } from '../../utils';
 import useSWR from 'swr';
 import { fetcher } from '../../utils';
+
+// icons
+import PlacesIcon from '../../public/static/icons/places.svg';
+import StarIcon from '../../public/static/icons/star.svg';
+import NearMeIcon from '../../public/static/icons/nearMe.svg';
+
 // import fetch from 'unfetch'
 
 export async function getStaticProps(context) {
@@ -165,18 +171,18 @@ const CoffeeStore = (initialProps) => {
         <div className={cls("glass", styles.col2)}>
           {address && (
             <div className={styles.iconWrapper}>
-              <Image src="/static/icons/places.svg" width={24} height={24} alt="places icon" />
+              <Image src={PlacesIcon} width={24} height={24} alt="places icon" />
               <p className={styles.text}>{address}</p>
             </div>
           )}
           {neighborhood && (
             <div className={styles.iconWrapper}>
-              <Image src="/static/icons/nearMe.svg" width={24} height={24} alt="near me icon" />
+              <Image src={NearMeIcon} width={24} height={24} alt="near me icon" />
               <p className={styles.text}>{neighborhood}</p>
             </div>
           )}
           <div className={styles.iconWrapper}>
-            <Image src="/static/icons/star.svg" width={24} height={24} alt="star icon" />
+            <Image src={StarIcon} width={24} height={24} alt="star icon" />
             <p className={styles.text}>{votingCount}</p>
           </div>
 
