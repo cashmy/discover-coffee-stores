@@ -143,6 +143,7 @@ const CoffeeStore = (initialProps) => {
     <div className={styles.layout}>
       <Head >
         <title>{name}</title>
+        <meta name="description" content={`${name} coffee store`} />
       </Head>
       <div className={styles.container}>
         <div className={styles.col1}>
@@ -164,18 +165,18 @@ const CoffeeStore = (initialProps) => {
         <div className={cls("glass", styles.col2)}>
           {address && (
             <div className={styles.iconWrapper}>
-              <Image src="/static/icons/places.svg" width={24} height={24} alt="icon" />
+              <Image src="/static/icons/places.svg" width={24} height={24} alt="places icon" />
               <p className={styles.text}>{address}</p>
             </div>
           )}
           {neighborhood && (
             <div className={styles.iconWrapper}>
-              <Image src="/static/icons/nearMe.svg" width={24} height={24} alt="icon" />
+              <Image src="/static/icons/nearMe.svg" width={24} height={24} alt="near me icon" />
               <p className={styles.text}>{neighborhood}</p>
             </div>
           )}
           <div className={styles.iconWrapper}>
-            <Image src="/static/icons/star.svg" width={24} height={24} alt="icon" />
+            <Image src="/static/icons/star.svg" width={24} height={24} alt="star icon" />
             <p className={styles.text}>{votingCount}</p>
           </div>
 
