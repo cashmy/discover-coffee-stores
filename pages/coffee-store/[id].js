@@ -43,10 +43,6 @@ export async function getStaticPaths() {
 const CoffeeStore = (initialProps) => {
   const router = useRouter();
 
-  if (router.isFallback) {
-    return <div>Loading...</div>
-  }
-
   const {
     state: {
       coffeeStores
@@ -54,7 +50,7 @@ const CoffeeStore = (initialProps) => {
   } = useContext(StoreContext);
 
   const id = router.query.id;
-  const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
+  const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore || {});
   const [votingCount, setVotingCount] = useState(0);
   const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher)
 
@@ -105,9 +101,14 @@ const CoffeeStore = (initialProps) => {
     } else {
       handleCreateCoffeeStore(initialProps.coffeeStore)
     }
-  }, [id, initialProps, initialProps.coffeeStore])
+  }, [id, initialProps, initialProps.coffeeStore, coffeeStores])
 
   const { address, name, neighborhood, imgUrl, } = coffeeStore;
+
+
+  if (router.isFallback) {
+    return <div>Loading...</div>
+  }
 
   // * Handle UpVote
   const handleUpvoteButton = async () => {
@@ -122,7 +123,7 @@ const CoffeeStore = (initialProps) => {
         }),
       })
       const dbCoffeeStore = await response.json();
-      
+
       // TODO: Notice for team mates
       // * The original code is not working because the dbCoffeeStore is not being cast as an array!
       if (dbCoffeeStore) {
