@@ -141,7 +141,7 @@ const CoffeeStore = (initialProps) => {
 
   return (
     <div className={styles.layout}>
-      <Head >
+      <Head lang="en">
         <title>{name}</title>
         <meta name="description" content={`${name} coffee store`} />
       </Head>
